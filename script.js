@@ -139,10 +139,33 @@ const redesenha = () => { sim2(); sim3(); };
 ['#inG', '#inA', '#inV', '#inTa', '#inH'].forEach(s => $(s).addEventListener('input', sim3));
 sim1(); redesenha();
 
-/* ---------- Vídeos locais (pré-visualização) ---------- */
-$$('.vid input[type=file]').forEach(inp => inp.addEventListener('change', () => {
-  const f = inp.files[0]; if (!f) return;
-  const v = inp.closest('figure').querySelector('video');
-  v.src = URL.createObjectURL(f); v.load();
-}));
+/* ---------- Vídeos ---------- */
+// Para adicionar outro vídeo, copie uma linha e use o nome do arquivo SEM a extensão.
+const VIDEOS = [
+  { nome: 'montagem',     titulo: 'Montagem do circuito' },
+  { nome: 'teste-sensor', titulo: 'Teste do sensor na água' }
+];
+// O navegador tenta cada formato na ordem até achar um que exista e toque.
+const EXTS = [['mp4','video/mp4'],['MP4','video/mp4'],['webm','video/webm'],['mov','video/mp4'],['MOV','video/mp4']];
+const lista = $('#listaVideos');
+VIDEOS.forEach(v => {
+  const fig = document.createElement('figure'); fig.className = 'vid';
+  const vid = document.createElement('video');
+  vid.controls = true; vid.preload = 'metadata'; vid.setAttribute('playsinline','');
+  const aviso = document.createElement('p'); aviso.className = 'aviso'; aviso.hidden = true; aviso.setAttribute('role','alert');
+  EXTS.forEach(([e,t],n) => {
+    const s = document.createElement('source'); s.src = `videos/${v.nome}.${e}`; s.type = t;
+    if (n === EXTS.length - 1) s.addEventListener('error', () => {
+      aviso.hidden = false;
+      aviso.textContent = `Vídeo não encontrado. Confira se existe videos/${v.nome}.mp4 no repositório (pasta "videos" ao lado do index.html, nome em minúsculas) e se o vídeo está em MP4 H.264.`;
+    });
+    vid.appendChild(s);
+  });
+  vid.addEventListener('loadedmetadata', () => {
+    if (!vid.videoWidth) { aviso.hidden = false; aviso.textContent = 'O arquivo foi encontrado, mas a imagem não toca neste navegador (provavelmente formato H.265/HEVC). Converta para MP4 H.264.'; }
+    else aviso.hidden = true;
+  });
+  const cap = document.createElement('figcaption'); cap.textContent = v.titulo;
+  fig.append(vid, aviso, cap); lista.appendChild(fig);
+});
 })();

@@ -97,9 +97,7 @@ pre code{background:none}
 .vid{margin:0;background:rgba(0,0,0,.25);border-radius:.6rem;overflow:hidden}
 .vid video{width:100%;aspect-ratio:16/9;background:#000;display:block}
 .vid figcaption{padding:.7rem;font-size:.9rem}
-.arq{display:block;margin-top:.5rem;background:var(--sol);color:#000;padding:.4rem .7rem;border-radius:.4rem;width:max-content;cursor:pointer}
-.arq input{position:absolute;opacity:0;width:1px;height:1px}
-.arq:focus-within{outline:3px solid #fff}
+.aviso{margin:0;padding:.7rem;background:#FFF3C4;color:#000;font-size:.9rem;border-left:6px solid var(--sol2)}
 .mapa{columns:2 220px;list-style:square}
 footer{background:var(--abismo);color:#fff;text-align:center;padding:2rem 1rem}
 footer a{color:var(--sol)}
