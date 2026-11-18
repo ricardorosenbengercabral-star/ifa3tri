@@ -140,11 +140,11 @@ const redesenha = () => { sim2(); sim3(); };
 sim1(); redesenha();
 
 /* ---------- Vídeos ---------- */
-// Para adicionar outro vídeo, copie uma linha e use o nome do arquivo SEM a extensão.
-const VIDEOS = [
-  { nome: 'montagem',     titulo: 'Montagem do circuito' },
-  { nome: 'teste-sensor', titulo: 'Teste do sensor na água' }
-];
+// Os vídeos do projeto agora estão no Google Drive e aparecem direto no index.html (iframes).
+// Esta lista é só para vídeos locais da pasta "videos". Está vazia de propósito.
+// Para adicionar um vídeo local, use o nome do arquivo SEM a extensão. Exemplo:
+//   { nome: 'montagem', titulo: 'Montagem do circuito' }
+const VIDEOS = [];
 // O navegador tenta cada formato na ordem até achar um que exista e toque.
 const EXTS = [['mp4','video/mp4'],['MP4','video/mp4'],['webm','video/webm'],['mov','video/mp4'],['MOV','video/mp4']];
 const lista = $('#listaVideos');
