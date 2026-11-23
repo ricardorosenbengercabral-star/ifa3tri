@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sol + Água | Monitoramento térmico inteligente</title>
+<meta name="description" content="Projeto interativo sobre sensores de temperatura, aquecimento solar de piscinas, física das medidas e robótica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Lexend:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#principal">Ir para o conteúdo</a>
+<header class="topo">
+<a class="marca" href="#inicio" aria-label="Sol + Água, início"><span class="logo" aria-hidden="true"></span>Sol + Água</a>
+<button id="btnMenu" class="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+<nav id="menu" aria-label="Menu principal">
+<a href="#painel">Painel</a><a href="#questoes">Questões</a><a href="#sensores">Sensores</a><a href="#fisica">Física das medidas</a>
+<a href="#pontos">Pontos de medição</a><a href="#simuladores">Simuladores</a><a href="#automacao">Robótica</a>
+<a href="#videos">Vídeos</a><a href="#impacto">Impacto social</a><a href="#mapa">Mapa do site</a>
+</nav>
+</header>
+<div class="barra-acess" role="region" aria-label="Ajustes de acessibilidade">
+<button data-acao="contraste" aria-pressed="false">Alto contraste</button>
+<button data-acao="dislexia" aria-pressed="false">Fonte para dislexia</button>
+<button data-acao="mais">A+</button><button data-acao="menos">A−</button>
+<button data-acao="calmo" aria-pressed="false">Reduzir movimento</button>
+<button data-acao="zerar">Restaurar</button>
+</div>
+<main id="principal">
+<section id="inicio" class="hero">
+<div class="hero-txt">
+<p class="selo">Projeto Integrador · 3º trimestre · Tecnologia</p>
+<h1>Sensores de temperatura: como medir o aquecimento da água?</h1>
+<p class="foco"><strong>Foco:</strong> Física das medidas e Robótica</p>
+<p>O sol esquenta a água da piscina, mas só um sensor, um circuito e um programa conseguem dizer quanto, onde e com que confiança. Este site mostra esse caminho do calor até o dado.</p>
+<p><a class="btn" href="#painel">Explorar painel</a> <a class="btn sec" href="#simuladores">Abrir simuladores</a> <a class="btn sec" href="#questoes">Ver as 4 questões</a></p>
+</div>
+<div class="hero-vis" aria-hidden="true">
+<div class="sol"></div>
+<svg viewBox="0 0 400 160" preserveAspectRatio="none"><path class="onda o1" d="M0 40 Q50 10 100 40 T200 40 T300 40 T400 40 V160 H0Z"/><path class="onda o2" d="M0 70 Q50 40 100 70 T200 70 T300 70 T400 70 V160 H0Z"/></svg>
+<div class="termo"><span id="heroTemp">27,4</span> °C</div>
+</div>
+</section>
+
+
+<section id="painel" class="painel-section">
+  <div class="section-heading">
+    <span class="eyebrow">CENTRAL DE MONITORAMENTO</span>
+    <h2>Painel inteligente</h2>
+    <p>Acompanhe uma simulação do sistema solar térmico em tempo real e entenda o que os sensores estão indicando.</p>
+  </div>
+  <div class="dashboard">
+    <article class="dash-main">
+      <div class="dash-top"><span class="live-dot"></span><span>SIMULAÇÃO ATIVA</span><span class="dash-time" id="dashClock">--:--:--</span></div>
+      <div class="temp-line"><div><span class="metric-label">Temperatura da piscina</span><strong class="big-temp"><span id="dashTemp">27,4</span><small>°C</small></strong></div><div class="temp-trend" id="dashTrend">↗ Aquecimento</div></div>
+      <div class="thermo-track"><span id="tempFill"></span></div>
+      <div class="thermo-scale"><span>10 °C</span><span>50 °C</span></div>
+      <div class="dash-foot"><span>Faixa de conforto simulada: 26–32 °C</span><span id="comfortState">Dentro da faixa</span></div>
+    </article>
+    <article class="dash-card">
+      <span class="metric-label">Coletor solar</span><strong class="dash-number" id="collectorTemp">34,8 °C</strong><span class="status-pill status-on" id="collectorState">● Ganho térmico</span>
+      <div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </article>
+    <article class="dash-card">
+      <span class="metric-label">Bomba de circulação</span><strong class="dash-number" id="pumpState">Ligada</strong><span class="status-pill status-on" id="pumpPill">● Operação simulada</span>
+      <div class="pump-icon">⟳</div>
+    </article>
+    <article class="dash-card diagnosis">
+      <span class="metric-label">Diagnóstico automático</span><strong id="diagnosisTitle">Sistema aquecendo</strong><p id="diagnosisText">O coletor está mais quente que a piscina. A circulação favorece a transferência de calor.</p>
+    </article>
+  </div>
+  <div class="history-panel">
+    <div class="history-head"><div><span class="eyebrow">DADOS DO SISTEMA</span><h3>Histórico de medições</h3></div><button class="btn btn-small" id="exportData">Exportar CSV ↓</button></div>
+    <div class="history-chart"><canvas id="historyChart" width="900" height="230" aria-label="Histórico simulado de temperatura" role="img"></canvas></div>
+    <div class="history-bottom"><span><i class="legend-dot water-dot"></i> Piscina</span><span><i class="legend-dot solar-dot"></i> Coletor</span><span id="lastUpdate">Última atualização: agora</span></div>
+  </div>
+  <p class="simulation-note">* Painel demonstrativo: os valores são simulados e não representam medições físicas de uma piscina real.</p>
+</section>
+
+<section id="questoes" class="destaque">
+<h2>Questões orientadoras</h2>
+<p>São as perguntas do trabalho. Cada resposta leva ao conteúdo e ao simulador que a explica.</p>
+<ol class="questoes">
+<li><h3>1. Como um sensor transforma uma grandeza física em um sinal elétrico?</h3><p>A temperatura muda uma propriedade do material (resistência ou tensão). Um circuito converte isso em volts e o conversor analógico-digital (ADC) em número.</p><a href="#sim-sinal">Simulador do sinal</a></li>
+<li><h3>2. Como medir a temperatura em diferentes pontos?</h3><p>A água não esquenta por igual. Usamos vários sensores (entrada, saída, superfície, fundo, ar) e comparamos.</p><a href="#pontos">Pontos de medição</a></li>
+<li><h3>3. Qual é a diferença entre precisão, resolução e tempo de resposta?</h3><p>Precisão é o quanto a leitura se aproxima do valor real. Resolução é o menor passo que o aparelho mostra. Tempo de resposta é o quanto ele demora a acompanhar a mudança.</p><a href="#sim-resp">Simulador de resposta</a></li>
+<li><h3>4. Como os dados podem indicar se o sistema está aquecendo a piscina?</h3><p>Comparando médias de leituras ao longo do tempo: se a temperatura sobe de forma consistente, acima do ruído, o sistema está aquecendo.</p><a href="#sim-piscina">Simulador da piscina</a></li>
+</ol>
+</section>
+
+<section id="sensores">
+<h2>Sensores de temperatura</h2>
+<p>Todo sensor aproveita um efeito físico que depende da temperatura. Comparamos os mais usados em projetos de robótica e automação.</p>
+<div class="tabela-rolagem" tabindex="0" role="region" aria-label="Tabela comparativa de sensores">
+<table>
+<caption>Comparação entre sensores de temperatura</caption>
+<thead><tr><th scope="col">Sensor</th><th scope="col">Princípio físico</th><th scope="col">Sinal de saída</th><th scope="col">Faixa típica</th><th scope="col">Uso na piscina</th></tr></thead>
+<tbody>
+<tr><th scope="row">Termistor NTC 10 kΩ</th><td>A resistência diminui quando a temperatura sobe (semicondutor)</td><td>Resistência, lida com divisor de tensão</td><td>−40 a 125 °C</td><td>Barato, bom para o protótipo</td></tr>
+<tr><th scope="row">LM35</th><td>Tensão de junção de transistores, proporcional a T</td><td>10 mV por °C</td><td>−55 a 150 °C</td><td>Simples, mas não é à prova d'água</td></tr>
+<tr><th scope="row">DS18B20</th><td>Sensor com conversor interno</td><td>Digital (1-Wire), 9 a 12 bits</td><td>−55 a 125 °C</td><td>Versão com sonda selada, ideal para água</td></tr>
+<tr><th scope="row">PT100 (RTD)</th><td>A resistência da platina aumenta com T, quase linear</td><td>Resistência (100 Ω a 0 °C)</td><td>−200 a 850 °C</td><td>Muito preciso, mais caro</td></tr>
+<tr><th scope="row">Termopar tipo K</th><td>Efeito Seebeck: junção de dois metais gera tensão</td><td>Cerca de 41 µV por °C</td><td>−200 a 1260 °C</td><td>Exagero para piscina, útil no coletor solar</td></tr>
+</tbody>
+</table>
+</div>
+<div class="caixa">
+<h3>Do calor ao número, em 4 etapas</h3>
+<p>Calor da água → o sensor muda de resistência ou tensão → o circuito gera uma tensão entre 0 e 5 V → o ADC de 10 bits a transforma em um valor de 0 a 1023 → o programa converte para °C.</p>
+<p>Para o NTC usamos a equação Beta: <code>R = R₀ · e^(B·(1/T − 1/T₀))</code>, com R₀ = 10 kΩ em T₀ = 298,15 K (25 °C) e B ≈ 3950 K.</p>
+</div>
+</section>
+
+<section id="fisica" class="agua">
+<h2>Física das medidas</h2>
+<div class="grade3">
+<article><h3>Precisão e exatidão</h3><p>Medidas repetidas podem estar agrupadas (boa precisão) e mesmo assim longe do valor real (erro sistemático). Corrigimos isso com calibração: comparamos com um termômetro de referência, por exemplo gelo fundente a 0 °C.</p></article>
+<article><h3>Resolução</h3><p>Com ADC de 10 bits e referência de 5 V, o passo é 5 V / 1023 ≈ 4,9 mV. No LM35 (10 mV/°C) isso dá cerca de 0,5 °C por passo. O DS18B20 em 12 bits chega a 0,0625 °C.</p></article>
+<article><h3>Tempo de resposta</h3><p>O sensor segue a água como um sistema de primeira ordem: <code>T(t) = Tf − (Tf − Ti)·e^(−t/τ)</code>. Em t = τ ele chega a 63% da variação e em 2,3·τ chega a 90%. Sonda grossa significa τ maior.</p></article>
+<article><h3>Calor e água</h3><p>A água tem calor específico alto (4186 J/kg·K). Uma piscina de 30 m³ tem 30 000 kg, então precisa de 125 MJ para subir 1 °C. Por isso a temperatura sobe devagar, algumas décimas de grau por hora.</p></article>
+<article><h3>Ruído e média</h3><p>Pequenas flutuações aleatórias são normais. Tirar a média de N leituras reduz o ruído em cerca de √N vezes.</p></article>
+<article><h3>Incerteza</h3><p>Todo resultado tem a forma valor ± incerteza. Exemplo: 27,4 ± 0,5 °C. Dizer só "27,4" esconde o quanto confiamos na medida.</p></article>
+</div>
+</section>
+
+<section id="pontos">
+<h2>Medir em diferentes pontos</h2>
+<p>Toque ou use Tab nos pontos do esquema para ver o que cada sensor informa.</p>
+<div class="esquema">
+<svg viewBox="0 0 600 260" role="img" aria-label="Esquema da piscina com coletor solar e cinco sensores">
+<rect x="20" y="90" width="360" height="140" rx="8" class="piscina"/>
+<rect x="430" y="30" width="150" height="60" class="coletor"/><text x="505" y="65" text-anchor="middle" class="txt">Coletor solar</text>
+<path d="M380 150 H410 V70 H430 M580 60 H590 V210 H380" class="cano"/>
+<circle cx="505" cy="20" r="14" class="sol-svg"/>
+</svg>
+<button class="ponto" style="left:11%;top:46%" data-i="0" aria-label="Sensor 1, superfície">1</button>
+<button class="ponto" style="left:40%;top:78%" data-i="1" aria-label="Sensor 2, fundo">2</button>
+<button class="ponto" style="left:65%;top:56%" data-i="2" aria-label="Sensor 3, entrada do coletor">3</button>
+<button class="ponto" style="left:97%;top:80%" data-i="3" aria-label="Sensor 4, saída do coletor">4</button>
+<button class="ponto" style="left:60%;top:12%" data-i="4" aria-label="Sensor 5, no coletor">5</button>
+</div>
+<p id="infoPonto" class="info" role="status" aria-live="polite">Escolha um ponto.</p>
+</section>
+
+<section id="simuladores" class="destaque">
+<h2>Simuladores</h2>
+<article id="sim-sinal" class="sim">
+<h3>1. Do calor ao sinal elétrico</h3>
+<label>Temperatura da água: <output id="oT">25</output> °C
+<input id="inT" type="range" min="0" max="100" step="0.5" value="25"></label>
+<dl class="leituras">
+<div><dt>Resistência do NTC</dt><dd id="rR"></dd></div>
+<div><dt>Tensão (divisor, 5 V)</dt><dd id="rV"></dd></div>
+<div><dt>ADC (0 a 1023)</dt><dd id="rA"></dd></div>
+<div><dt>Temperatura calculada</dt><dd id="rC"></dd></div>
+<div><dt>LM35: tensão e ADC</dt><dd id="rL"></dd></div>
+</dl>
+</article>
+
+<article id="sim-resp" class="sim">
+<h3>2. Precisão, resolução e tempo de resposta</h3>
+<p>A sonda sai de 25 °C e entra em água a 45 °C no instante 10 s.</p>
+<div class="controles">
+<label>Tempo de resposta τ: <output id="oTau">30</output> s <input id="inTau" type="range" min="2" max="120" value="30"></label>
+<label>Resolução: <select id="inRes"><option value="1">1 °C</option><option value="0.5">0,5 °C (LM35 no Arduino)</option><option value="0.0625" selected>0,0625 °C (DS18B20, 12 bits)</option></select></label>
+<label>Ruído (precisão): ± <output id="oRu">0.3</output> °C <input id="inRu" type="range" min="0" max="2" step="0.1" value="0.3"></label>
+</div>
+<canvas id="cResp" width="640" height="280" role="img" aria-label="Gráfico da leitura do sensor ao longo do tempo"></canvas>
+<p class="legenda">Eixo horizontal: tempo (s). Eixo vertical: °C. Linha azul: água real. Pontos amarelos: leituras.</p>
+<p id="txtResp" class="info" role="status" aria-live="polite"></p>
+</article>
+
+<article id="sim-piscina" class="sim">
+<h3>3. A piscina está aquecendo?</h3>
+<div class="controles">
+<label>Radiação máxima: <output id="oG">900</output> W/m² <input id="inG" type="range" min="300" max="1100" step="50" value="900"></label>
+<label>Área do coletor: <output id="oA">15</output> m² <input id="inA" type="range" min="2" max="30" value="15"></label>
+<label>Volume da piscina: <output id="oV">30</output> m³ <input id="inV" type="range" min="10" max="60" value="30"></label>
+<label>Ar ambiente: <output id="oTa">22</output> °C <input id="inTa" type="range" min="5" max="35" value="22"></label>
+<label>Horário da análise: <output id="oH">15</output> h <input id="inH" type="range" min="2" max="24" value="15"></label>
+</div>
+<canvas id="cPisc" width="640" height="280" role="img" aria-label="Gráfico da temperatura da piscina em 24 horas"></canvas>
+<p class="legenda">Eixo horizontal: horas do dia. Linha azul: temperatura real. Pontos amarelos: leituras do sensor (resolução 0,1 °C, ruído ±0,1 °C).</p>
+<p id="txtPisc" class="info" role="status" aria-live="polite"></p>
+</article>
+</section>
+
+<section id="automacao">
+<h2>Robótica e automação</h2>
+<p>A ideia é ligar a bomba só quando vale a pena: quando o coletor está mais quente que a piscina. Isso economiza energia e usa o sol de forma inteligente.</p>
+<pre tabindex="0"><code>// Arduino: controle da bomba (exemplo conceitual)
+float tCol = lerSensor(SENSOR_COLETOR); // °C
+float tPisc = lerSensor(SENSOR_PISCINA); // °C
+if (tCol - tPisc &gt; 5.0) digitalWrite(BOMBA, HIGH); // ligar
+else if (tCol - tPisc &lt; 2.0) digitalWrite(BOMBA, LOW); // desligar
+// histerese de 3 °C evita liga-desliga rápido</code></pre>
+<p>Os dados são registrados a cada minuto. A média móvel de 60 minutos mostra a tendência e o aviso "aquecendo" só aparece acima do ruído do sensor.</p>
+</section>
+
+<section id="videos" class="agua">
+<h2>Vídeos do projeto</h2>
+<p>Aqui ficam os vídeos da montagem e dos testes com o sensor.</p>
+
+<!-- Vídeos hospedados no Google Drive -->
+<div class="grade3">
+  <figure class="vid">
+    <iframe src="https://drive.google.com/file/d/1T0YdO5-Rf9By5EIGJvN10Q1as_zZNHZc/preview"
+            width="100%" height="260" allow="autoplay" allowfullscreen loading="lazy"
+            title="Montagem do circuito"></iframe>
+    <figcaption>Montagem do circuito</figcaption>
+  </figure>
+  <figure class="vid">
+    <iframe src="https://drive.google.com/file/d/1omv3t6VqhR7RlIL5jFdZzRT_dXFU5LTQ/preview"
+            width="100%" height="260" allow="autoplay" allowfullscreen loading="lazy"
+            title="Teste do sensor na água"></iframe>
+    <figcaption>Teste do sensor na água</figcaption>
+  </figure>
+</div>
+
+<!-- Lista de vídeos locais (pasta "videos"): o script.js preenche esta div se a lista VIDEOS tiver itens. -->
+<div id="listaVideos" class="grade3"></div>
+</section>
+
+<section id="acessibilidade">
+<h2>Acessibilidade e inclusão</h2>
+<ul class="lista">
+<li><strong>Teclado:</strong> tudo funciona com Tab, Enter e setas dos controles. Há link "Ir para o conteúdo" e foco visível.</li>
+<li><strong>Leitura:</strong> alto contraste, fonte para dislexia, aumento de letra e redução de movimento. Suas escolhas ficam salvas.</li>
+<li><strong>Gráficos:</strong> cada gráfico tem descrição em texto e resultado escrito.</li>
+<li><strong>Vídeos:</strong> com controles de reprodução, tela cheia e controle de volume.</li>
+</ul>
+</section>
+
+<section id="impacto" class="destaque">
+<h2>Inovação e impacto social</h2>
+<div class="grade3">
+<article><h3>Automação com o sol</h3><p>A bomba só liga com diferença real de temperatura, usando energia solar térmica em vez de resistência elétrica.</p></article>
+<article><h3>Sustentabilidade</h3><p>Aquecer com o sol reduz consumo de eletricidade e gás. Cobrir a piscina também diminui a perda de calor e a evaporação.</p></article>
+<article><h3>Inclusão digital</h3><p>Sensores de poucos reais e site aberto, leve e acessível mostram que ciência de dados cabe na escola pública.</p></article>
+</div>
+</section>
+
+<section id="mapa">
+<h2>Mapa do site</h2>
+<ul class="mapa">
+<li><a href="#inicio">Início</a></li><li><a href="#painel">Painel inteligente</a></li><li><a href="#questoes">Questões orientadoras</a></li><li><a href="#sensores">Sensores de temperatura</a></li>
+<li><a href="#fisica">Física das medidas</a></li><li><a href="#pontos">Medir em diferentes pontos</a></li>
+<li><a href="#simuladores">Simuladores</a><ul><li><a href="#sim-sinal">Sinal elétrico</a></li><li><a href="#sim-resp">Resposta</a></li><li><a href="#sim-piscina">Piscina</a></li></ul></li>
+<li><a href="#automacao">Robótica</a></li><li><a href="#videos">Vídeos</a></li><li><a href="#acessibilidade">Acessibilidade</a></li><li><a href="#impacto">Impacto social</a></li>
+</ul>
+</section>
+</main>
+<footer><p>Projeto Integrador · Tecnologia · 3º trimestre · Colégio Estadual do Paraná · Ricardo, Bernardo, Sara, Elena, Raquel</p><p><a href="#inicio">Voltar ao topo</a></p></footer>
+<div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>try{new window.VLibras.Widget('https://vlibras.gov.br/app')}catch(e){}</script>
+<script src="script.js"></script>
+</body>
+</html>
