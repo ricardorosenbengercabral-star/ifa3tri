@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sol + Água · Sensores de temperatura na piscina</title>
-<meta name="description" content="Como medir o aquecimento da água: sensores de temperatura, física das medidas e robótica.">
+<title>Sol + Água | Monitoramento térmico inteligente</title>
+<meta name="description" content="Projeto interativo sobre sensores de temperatura, aquecimento solar de piscinas, física das medidas e robótica.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Lexend:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -15,7 +15,7 @@
 <a class="marca" href="#inicio" aria-label="Sol + Água, início"><span class="logo" aria-hidden="true"></span>Sol + Água</a>
 <button id="btnMenu" class="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
 <nav id="menu" aria-label="Menu principal">
-<a href="#questoes">Questões</a><a href="#sensores">Sensores</a><a href="#fisica">Física das medidas</a>
+<a href="#painel">Painel</a><a href="#questoes">Questões</a><a href="#sensores">Sensores</a><a href="#fisica">Física das medidas</a>
 <a href="#pontos">Pontos de medição</a><a href="#simuladores">Simuladores</a><a href="#automacao">Robótica</a>
 <a href="#videos">Vídeos</a><a href="#impacto">Impacto social</a><a href="#mapa">Mapa do site</a>
 </nav>
@@ -34,13 +34,48 @@
 <h1>Sensores de temperatura: como medir o aquecimento da água?</h1>
 <p class="foco"><strong>Foco:</strong> Física das medidas e Robótica</p>
 <p>O sol esquenta a água da piscina, mas só um sensor, um circuito e um programa conseguem dizer quanto, onde e com que confiança. Este site mostra esse caminho do calor até o dado.</p>
-<p><a class="btn" href="#simuladores">Abrir os simuladores</a> <a class="btn sec" href="#questoes">Ver as 4 questões</a></p>
+<p><a class="btn" href="#painel">Explorar painel</a> <a class="btn sec" href="#simuladores">Abrir simuladores</a> <a class="btn sec" href="#questoes">Ver as 4 questões</a></p>
 </div>
 <div class="hero-vis" aria-hidden="true">
 <div class="sol"></div>
 <svg viewBox="0 0 400 160" preserveAspectRatio="none"><path class="onda o1" d="M0 40 Q50 10 100 40 T200 40 T300 40 T400 40 V160 H0Z"/><path class="onda o2" d="M0 70 Q50 40 100 70 T200 70 T300 70 T400 70 V160 H0Z"/></svg>
 <div class="termo"><span id="heroTemp">27,4</span> °C</div>
 </div>
+</section>
+
+
+<section id="painel" class="painel-section">
+  <div class="section-heading">
+    <span class="eyebrow">CENTRAL DE MONITORAMENTO</span>
+    <h2>Painel inteligente</h2>
+    <p>Acompanhe uma simulação do sistema solar térmico em tempo real e entenda o que os sensores estão indicando.</p>
+  </div>
+  <div class="dashboard">
+    <article class="dash-main">
+      <div class="dash-top"><span class="live-dot"></span><span>SIMULAÇÃO ATIVA</span><span class="dash-time" id="dashClock">--:--:--</span></div>
+      <div class="temp-line"><div><span class="metric-label">Temperatura da piscina</span><strong class="big-temp"><span id="dashTemp">27,4</span><small>°C</small></strong></div><div class="temp-trend" id="dashTrend">↗ Aquecimento</div></div>
+      <div class="thermo-track"><span id="tempFill"></span></div>
+      <div class="thermo-scale"><span>10 °C</span><span>50 °C</span></div>
+      <div class="dash-foot"><span>Faixa de conforto simulada: 26–32 °C</span><span id="comfortState">Dentro da faixa</span></div>
+    </article>
+    <article class="dash-card">
+      <span class="metric-label">Coletor solar</span><strong class="dash-number" id="collectorTemp">34,8 °C</strong><span class="status-pill status-on" id="collectorState">● Ganho térmico</span>
+      <div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </article>
+    <article class="dash-card">
+      <span class="metric-label">Bomba de circulação</span><strong class="dash-number" id="pumpState">Ligada</strong><span class="status-pill status-on" id="pumpPill">● Operação simulada</span>
+      <div class="pump-icon">⟳</div>
+    </article>
+    <article class="dash-card diagnosis">
+      <span class="metric-label">Diagnóstico automático</span><strong id="diagnosisTitle">Sistema aquecendo</strong><p id="diagnosisText">O coletor está mais quente que a piscina. A circulação favorece a transferência de calor.</p>
+    </article>
+  </div>
+  <div class="history-panel">
+    <div class="history-head"><div><span class="eyebrow">DADOS DO SISTEMA</span><h3>Histórico de medições</h3></div><button class="btn btn-small" id="exportData">Exportar CSV ↓</button></div>
+    <div class="history-chart"><canvas id="historyChart" width="900" height="230" aria-label="Histórico simulado de temperatura" role="img"></canvas></div>
+    <div class="history-bottom"><span><i class="legend-dot water-dot"></i> Piscina</span><span><i class="legend-dot solar-dot"></i> Coletor</span><span id="lastUpdate">Última atualização: agora</span></div>
+  </div>
+  <p class="simulation-note">* Painel demonstrativo: os valores são simulados e não representam medições físicas de uma piscina real.</p>
 </section>
 
 <section id="questoes" class="destaque">
@@ -209,7 +244,7 @@ else if (tCol - tPisc &lt; 2.0) digitalWrite(BOMBA, LOW); // desligar
 <section id="mapa">
 <h2>Mapa do site</h2>
 <ul class="mapa">
-<li><a href="#inicio">Início</a></li><li><a href="#questoes">Questões orientadoras</a></li><li><a href="#sensores">Sensores de temperatura</a></li>
+<li><a href="#inicio">Início</a></li><li><a href="#painel">Painel inteligente</a></li><li><a href="#questoes">Questões orientadoras</a></li><li><a href="#sensores">Sensores de temperatura</a></li>
 <li><a href="#fisica">Física das medidas</a></li><li><a href="#pontos">Medir em diferentes pontos</a></li>
 <li><a href="#simuladores">Simuladores</a><ul><li><a href="#sim-sinal">Sinal elétrico</a></li><li><a href="#sim-resp">Resposta</a></li><li><a href="#sim-piscina">Piscina</a></li></ul></li>
 <li><a href="#automacao">Robótica</a></li><li><a href="#videos">Vídeos</a></li><li><a href="#acessibilidade">Acessibilidade</a></li><li><a href="#impacto">Impacto social</a></li>
